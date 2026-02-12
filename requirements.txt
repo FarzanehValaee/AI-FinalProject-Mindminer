@@ -1,7 +1,11 @@
+# Data & ML
 numpy
 pandas
 scikit-learn
+
+# NLP (stemming in recommender / training)
+nltk
+
+# Visualization (EDA)
 matplotlib
 seaborn
-xgboost
-pandas-profiling
