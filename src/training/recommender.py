@@ -34,7 +34,13 @@ def _load_model():
 
 def recommend(movie: str, top_k: int = 5):
     _load_model()
-    match = _new_df[_new_df["title"] == movie]
+    query = (movie or "").strip()
+    if not query:
+        return ["Please enter a movie title."]
+    # Case-insensitive: normalize to string, strip, then compare lowercased
+    titles_norm = _new_df["title"].fillna("").astype(str).str.strip().str.lower()
+    query_lower = query.lower()
+    match = _new_df[titles_norm == query_lower]
     if match.empty:
         return [f"Movie not found: '{movie}'"]
     movie_index = match.index[0]
