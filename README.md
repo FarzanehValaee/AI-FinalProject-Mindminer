@@ -1,12 +1,13 @@
 # Mindminer
 
-Content-based **movie recommendation** system: get similar movies based on tags (genres, keywords, cast, crew). Includes preprocessing, training, EDA, and a Tkinter UI.
+Content-based **movie recommendation** system: get similar movies based on tags (genres, keywords, cast, crew). Includes preprocessing, training, EDA, evaluation, and a Tkinter UI.
 
 ## Features
 
 - **Preprocessing:** Merge TMDB movies + credits, clean and build a unified `tags` column.
 - **Recommendation:** Cosine similarity on tag vectors (CountVectorizer + NLTK stemming); **case-insensitive** movie search.
 - **EDA:** Exploratory notebooks (title length, tag distribution, top tags, etc.).
+- **Evaluation:** Precision@K, catalog coverage, and intra-list diversity on a sample of queries (self-contained in `evaluation.ipynb`).
 - **UI:** Simple desktop app (Tkinter) to search by movie name and see top-5 similar movies.
 
 ## Sample output
@@ -37,18 +38,21 @@ Place a file at docs/screenshot.png (or ./screenshot.png) and uncomment the line
 
 ```
 ├── data/
-│   ├── raw/              # movies.csv, credits.csv
-│   └── processed/         # movies_merge.csv (output of preprocessing)
+│   ├── raw/                 # movies.csv, credits.csv
+│   └── processed/           # movies_merge.csv (output of preprocessing)
 ├── notebooks/
-│   └── EDA.ipynb          # Exploratory data analysis
+│   └── EDA.ipynb             # Exploratory data analysis
+├── report/                   # Project report (e.g. PDF)
 ├── src/
 │   ├── preprocessing/
 │   │   └── preprocessing.ipynb
 │   ├── training/
 │   │   ├── training.ipynb
-│   │   └── recommender.py # recommend(movie) used by UI
+│   │   └── recommender.py    # recommend(movie) used by UI
+│   ├── evaluation/
+│   │   └── evaluation.ipynb # Precision@K, coverage, diversity
 │   └── ui/
-│       └── ui.ipynb       # Tkinter GUI
+│       └── ui.ipynb          # Tkinter GUI
 ├── requirements.txt
 └── README.md
 ```
@@ -85,10 +89,8 @@ Place a file at docs/screenshot.png (or ./screenshot.png) and uncomment the line
 
 ## How to run
 
-1. **Preprocessing**Open and run `src/preprocessing/preprocessing.ipynb` to produce `movies_merge.csv` in `data/processed/`.
-2. **Training** (optional)`src/training/training.ipynb` builds the similarity logic. The UI uses `src/training/recommender.py`, which loads the same data and builds the model on first use.
-3. **EDA**Run `notebooks/EDA.ipynb` for visualizations (uses `data/processed/movies_merge.csv`).
-4. **UI**
-   Run `src/ui/ui.ipynb`: execute the **import** cell first, then the **Tkinter** cell.
-   Run the notebook from the **project root** (or ensure the project root is in `sys.path`) so `from src.training.recommender import recommend` works.
-   Search is **case-insensitive** (e.g. "avatar" or "Avatar" both work).
+1. **Preprocessing:** Open and run `src/preprocessing/preprocessing.ipynb` to produce `movies_merge.csv` in `data/processed/`.
+2. **Training (optional):** `src/training/training.ipynb` builds the similarity logic. The UI uses `src/training/recommender.py`, which loads the same data and builds the model on first use.
+3. **EDA:** Run `notebooks/EDA.ipynb` for visualizations (uses `data/processed/movies_merge.csv`).
+4. **Evaluation:** Run `src/evaluation/evaluation.ipynb` to compute Precision@5, catalog coverage, and intra-list diversity on a sample (e.g. 500 queries). Run from project root or `src/evaluation/`.
+5. **UI:** Run `src/ui/ui.ipynb`: execute the **import** cell first, then the **Tkinter** cell. Run from the **project root** (or ensure the project root is in `sys.path`) so `from src.training.recommender import recommend` works. Search is **case-insensitive** (e.g. "avatar" or "Avatar" both work).
